@@ -80,7 +80,7 @@ catch(e){
         <div className='flex'>
           <div onClick={connectWallet} className='w-fit cursor-pointer'>
 
-         <A0_button  bg={"transparent"}  border={true} content={"Projects"} size={"150"}/>
+         <A0_button  bg={"transparent"}  border={false} content={"Projects"} size={"150"}/>
           </div>
         </div>
 
@@ -90,14 +90,9 @@ catch(e){
                 <div className='w-full flex flex-col items-center'>
                   {/* this is the gradient text box  */}
 
-                  {/* <div className=' w-[19%] h-9 bg-gradient-to-r flex items-center justify-center from-purple-400 tracking-wide  to-pink-400    text-neutral-950 font-semibold rounded-full'>
+                  <div className=' w-[19%] h-9 bg-gradient-to-r flex items-center justify-center from-purple-400 tracking-wide  to-pink-400    text-neutral-950 font-semibold rounded-full'>
                     <h1>✨ Game-Changing Innovations </h1>
-                  </div> */}
-
-                  <div className='w-[20%] uppercase mb-5 text-sm flex items-center justify-center gap-3 h-9 border-[1px] border-[#a6e433] text-[#a6e433] rounded-full'>
-                      <GiPolarStar/>
-                      <h1>Game-Changing Innovation</h1>
-                    </div>
+                  </div>
 
                   {/* this is the main text area  */}
                   

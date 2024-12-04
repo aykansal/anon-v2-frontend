@@ -243,7 +243,7 @@ export function Builder() {
             {/* this is the code editor screen  */}
 
 
-          <div className={` bg-gray-900 noscroll ${chat ? "w-[55%]" : "w-[70%]"} transition-all duration-300 rounded-lg shadow-lg p-4 `}>
+          <div className={` bg-gray-900 noscroll ${chat ? "w-[50%]" : "w-[70%]"} transition-all duration-300 rounded-lg shadow-lg p-4 `}>
             <TabView func ={closeChat} activeTab={activeTab} onTabChange={setActiveTab} />
             <div className="h-[calc(100%-4rem)]">
             {activeTab === 'code' ? (
@@ -263,7 +263,7 @@ export function Builder() {
 
 
 
-              <div className={` ${ chat ? "block" : "hidden"} rounded-xl p-1 w-[25%] bg-gray-50  h-full `}>
+              <div className={` ${ chat ? "block" : "hidden"} rounded-xl p-1 w-[30%] bg-gray-50  h-full `}>
                 {/* inner div of the chat box  */}
 
        

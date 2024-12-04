@@ -94,7 +94,7 @@ catch(e){
                     <h1>✨ Game-Changing Innovations </h1>
                   </div> */}
 
-                  <div className='w-[20%] uppercase mb-5 text-sm flex items-center justify-center gap-3 h-9 border-[1px] border-[#a6e433] text-[#a6e433] rounded-full'>
+                  <div className='w-[15%] uppercase text-sm flex items-center justify-center gap-3 h-9 border-[1px] border-[#a6e433] text-[#a6e433] rounded-full'>
                       <GiPolarStar/>
                       <h1>Game-Changing Innovation</h1>
                     </div>

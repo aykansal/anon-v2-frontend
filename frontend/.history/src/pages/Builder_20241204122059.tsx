@@ -243,7 +243,7 @@ export function Builder() {
             {/* this is the code editor screen  */}
 
 
-          <div className={` bg-gray-900 noscroll ${chat ? "w-[55%]" : "w-[70%]"} transition-all duration-300 rounded-lg shadow-lg p-4 `}>
+          <div className={` bg-gray-900 noscroll ${chat ? "w-[55%]" : "w-[75%]"} transition-all duration-300 rounded-lg shadow-lg p-4 `}>
             <TabView func ={closeChat} activeTab={activeTab} onTabChange={setActiveTab} />
             <div className="h-[calc(100%-4rem)]">
             {activeTab === 'code' ? (
