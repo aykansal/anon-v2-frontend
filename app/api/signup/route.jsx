@@ -12,7 +12,9 @@ const {name , email , picture} = await req.json()
                                              name:name,
                                              email:email,
                                              picture:picture,
-                                             uid:uuid4()
+                                             uid:uuid4(),
+                                             token:50000
+
                               }
                })
                

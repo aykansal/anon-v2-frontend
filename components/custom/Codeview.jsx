@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { Loader2Icon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+import SandPackPreviewClient from "./SandPackPreviewClient";
 const Codeview = () => {
   const [activeTab , setactiveTab] = useState("code")
   const [files, setfiles]= useState(Extras.DEFAULT_FILE)
@@ -84,7 +85,7 @@ const Codeview = () => {
     <SandpackCodeEditor  style={{height:"78vh"}}/>
       </>
   :<>
-      <SandpackPreview  showNavigator={true} style={{height:"78vh"}} />
+  <SandPackPreviewClient/>
       </>}
     </SandpackLayout>
   </SandpackProvider>

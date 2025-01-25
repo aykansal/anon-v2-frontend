@@ -10,15 +10,22 @@ import Markdown from "react-markdown"
 import Prompt from '@/data/Prompt'
 
 const Chatview = () => {
+
+  const countToken = (inputtext)=>{
+    return inputtext.trim().split(/\s+/).filter(word=>word).length
+  }
+
   const { message, setmessage } = useContext(MessageContext)
   const { userDets } = useContext(UserDetailsContext)
   const [userInput, setuserInput] = useState('')
   const [loading, setloading] = useState(false)
   const [responseReceived, setResponseReceived] = useState(false)
 
+
   useEffect(() => {
     getMessages()
   }, [])
+
 
   const getMessages = async () => {
     const id = localStorage.getItem("chatId")
@@ -30,10 +37,9 @@ const Chatview = () => {
     } catch (error) {
       console.error("Error fetching messages:", error)
     }
-  }
+}
 
   useEffect(() => {
-
     const getAiresponse = async () => {
       setloading(true)
       const PROMPT = JSON.stringify(message) + Prompt.CHAT_PROMPT
@@ -46,6 +52,11 @@ const Chatview = () => {
           role: "ai",
           content: result.data.res
         }])
+        const token = countToken(JSON.stringify(result.data.res))
+        axios.post("/api/updateToken",{
+          id:userDets.id,
+          token:token
+        })
         setResponseReceived(true)  
       } catch (error) {
         console.error("Error generating AI response:", error)
@@ -67,7 +78,7 @@ const Chatview = () => {
 
 
 
-  const onGenerate = () => {
+const onGenerate = () => {
     setmessage(prev => [...prev, {
       role: "user",
       content: userInput
