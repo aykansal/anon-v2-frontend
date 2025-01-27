@@ -25,21 +25,25 @@ const Hero = () => {
         return ; 
     }
     if(userDets.id){
-      
+      console.log("storing the data in setMeesage")
       setmessage({
         role:"user" , 
         content:input
       })
+
       const response = await axios.post("/api/messages" , {id:userDets.id , input:input})
       console.log(response.data.msg.message)
+
       setmessage(response.data.msg.message)
+
       localStorage.setItem("chatId" , response.data.msg.id)
       localStorage.setItem("messageArray" , JSON.stringify(response.data.msg.message))
 
+
+
       if(response.data){
         setloading(false)
-        redirect('/workspace')
-        
+        redirect('/workspace') 
       }
     }
  
@@ -91,12 +95,12 @@ const Hero = () => {
 
 {["create a TODO app in react" , "create a Budget track app" , "create a flappy bird game" , "write backend for authentication" , "create a landing page"].map((input,index)=>(
 
-  <div 
-  key={index}
-  className='px-3 text-gray-400 hover:text-gray-200 cursor-pointer py-1 text-sm border border-white/30 rounded-full'
-  onClick={()=>OnGenerate(input)}
-  >
-                    <h2>{input}</h2>
+        <div 
+         key={index}
+         className='px-3 text-gray-400 hover:text-gray-200 cursor-pointer py-1 text-sm border border-white/30 rounded-full'
+         onClick={()=>OnGenerate(input)}
+        >
+             <h2>{input}</h2>
 
           </div>
 

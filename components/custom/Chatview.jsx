@@ -1,6 +1,5 @@
 "use client"
-
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { MessageContext } from '@/context/MessagesContext'
 import { UserDetailsContext } from '@/context/UserDetailsContext'
@@ -8,18 +7,19 @@ import { ArrowRight, Link, Loader2Icon } from 'lucide-react'
 import Image from 'next/image'
 import Markdown from "react-markdown"
 import Prompt from '@/data/Prompt'
-
 const Chatview = () => {
-
-  const countToken = (inputtext)=>{
-    return inputtext.trim().split(/\s+/).filter(word=>word).length
-  }
-
-  const { message, setmessage } = useContext(MessageContext)
+  
+  
+  
+  const lastCalledRef = useRef(0); // Ref to track the last call timestamp
+  
+  const context = useContext(MessageContext)
   const { userDets } = useContext(UserDetailsContext)
   const [userInput, setuserInput] = useState('')
   const [loading, setloading] = useState(false)
   const [responseReceived, setResponseReceived] = useState(false)
+
+  
 
 
   useEffect(() => {
@@ -39,43 +39,59 @@ const Chatview = () => {
     }
 }
 
-  useEffect(() => {
-    const getAiresponse = async () => {
-      setloading(true)
-      const PROMPT = JSON.stringify(message) + Prompt.CHAT_PROMPT
-      try {
-        const result = await axios.post('api/ai-chat', {
-          prompt: PROMPT
-        })
-        console.log(result.data.res)
-        setmessage(prev => [...prev, {
+
+if(!context){
+  throw new Error("context is not present")
+}
+const {message , setmessage} = context
+useEffect(() => {
+  console.log(message.content);
+
+  const getAiresponse = async () => {
+    const now = Date.now();
+    if (now - lastCalledRef.current < 10000) {
+      console.log("Rate limiter active, skipping call.");
+      return; // Exit if the function was called within the last 10 seconds
+    }
+
+    lastCalledRef.current = now; // Update the timestamp
+    console.log("Calling the get AI response here");
+    setLoading(true);
+
+    const PROMPT = JSON.stringify(message) + Prompt.CHAT_PROMPT;
+
+    try {
+      const result = await axios.post("api/ai-chat", {
+        prompt: PROMPT,
+      });
+
+      console.log("This is the AI response from the entered user prompt", result.data.res);
+
+      setmessage((prev) => [
+        ...prev,
+        {
           role: "ai",
-          content: result.data.res
-        }])
-        const token = countToken(JSON.stringify(result.data.res))
-        axios.post("/api/updateToken",{
-          id:userDets.id,
-          token:token
-        })
-        setResponseReceived(true)  
-      } catch (error) {
-        console.error("Error generating AI response:", error)
-      } finally {
-        setloading(false)
-      }
+          content: result.data.res,
+        },
+      ]);
+
+      setResponseReceived(true);
+    } catch (error) {
+      console.error("Error generating AI response:", error);
+    } finally {
+      setloading(false);
     }
+  };
 
-
-    if (message?.length > 0 && !responseReceived) {
-      console.log(message[message.length - 1].role)
-      let role = message[message.length - 1].role
-      if (role == "user") {
-        console.log("creating AI response")
-        getAiresponse()
-      }
+  if (message?.length > 0 && !responseReceived) {
+    console.log(message[message.length - 1].role);
+    let role = message[message.length - 1].role;
+    if (role === "user") {
+      console.log("Creating AI response");
+      getAiresponse();
     }
-  }, [])
-
+  }
+}, [message]);
 
 
 const onGenerate = () => {
@@ -91,10 +107,9 @@ const onGenerate = () => {
     <div className='w-full relative h-[100%] flex flex-col justify-between'>
       <div className='w-full top-0 z-0 pt-1 min-h-10 max-h-[60%] overflow-y-hidden'>
         <div className='flex flex-col removesc h-full gap-3 overflow-y-scroll'>
-          {message?.length > 0 ? (
+          {message.length > 0 ? (
             message.map((msg, index) => (
               <div className='min-w-[60%] flex items-start gap-3 max-w-[90%] p-3 rounded-xl bg-[#222222]' key={index}>
-                {/* Assuming the message object contains a 'content' property */}
                 {msg.role === "user" &&
                   <Image className='rounded-full' src={userDets.picture} width={35} height={35} alt="not showing" />}
                 <Markdown className='leading-7 '>{msg.content}</Markdown>

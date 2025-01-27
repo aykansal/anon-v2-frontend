@@ -8,8 +8,9 @@ const page = () => {
     <div className='w-full h-screen overflow-hidden'>
         <Navbar/>
         <div className='w-full gap-5 h-full px-10 grid grid-cols-1 md:grid-cols-3'>
-          <div className='w-full h-[80%]'>
-            <Chatview/>
+          <div className='w-full h-[80%] overflow-hidden relative'>
+     
+            <Chatview/>        {/* chatview section done checking  */} 
             </div>
             <div className='col-span-2'>
               <Codeview/>

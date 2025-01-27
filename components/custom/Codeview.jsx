@@ -11,7 +11,7 @@ import {
 } from "@codesandbox/sandpack-react";
 import axios from "axios";
 import { Loader2Icon } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import SandPackPreviewClient from "./SandPackPreviewClient";
 const Codeview = () => {
   const [activeTab , setactiveTab] = useState("code")
@@ -20,10 +20,11 @@ const Codeview = () => {
 
   const context = useContext(MessageContext)
   const {message} = context ; 
-
+  const lastCalledRef = useRef(0);
   const GetCode = async()=>{
+
     setloading(true)
-    console.log(message)
+   
     const PROMPT = message[message.length - 1].content +" " + Prompt.CODE_GEN_PROMPT
     try{
       const result =await axios.post("/api/ai-chat/ai-code-gen",{
@@ -38,17 +39,24 @@ const Codeview = () => {
       console.log(err)
     }
   }
-
   useEffect(() => {
-    if(message?.length>0){
-      const role = message[message?.length -1].role
-      if(role == "user"){
-        GetCode()
+    if (message?.length > 0) {
+      console.log("Generating code again");
+      const role = message[message.length - 1].role;
+      console.log(role);
+
+      if (role === "user") {
+        const now = Date.now();
+        if (now - lastCalledRef.current >= 10000) {
+          lastCalledRef.current = now; // Update the timestamp
+          GetCode();
+        } else {
+          console.log("Rate limiter active, skipping GetCode call.");
+        }
       }
     }
+  }, [message]);
 
-  }, [])
-  
 
   return (
     <div className=" relative " >
