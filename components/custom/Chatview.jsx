@@ -11,8 +11,7 @@ const Chatview = () => {
   
   
   
-  const lastCalledRef = useRef(0); // Ref to track the last call timestamp
-  
+  const lastCalledRef = useRef(0); 
   const context = useContext(MessageContext)
   const { userDets } = useContext(UserDetailsContext)
   const [userInput, setuserInput] = useState('')
@@ -22,76 +21,77 @@ const Chatview = () => {
   
 
 
-  // useEffect(() => {
-  //   getMessages()
-  // }, [])
+  useEffect(() => {
+    getMessages()
+  }, [])
 
 
-//   const getMessages = async () => {
-//     const id = localStorage.getItem("chatId")
-//     console.log(id)
-//     try {
-//       const response = await axios.get("/api/messages/getmessages/" + id)
-//       console.log(response.data.message)
-//       setmessage(response.data.message)
-//     } catch (error) {
-//       console.error("Error fetching messages:", error)
-//     }
-// }
+  const getMessages = async () => {
+    const id = localStorage.getItem("chatId")
+    console.log(id)
+    try {
+      const response = await axios.get("/api/messages/getmessages/" + id)
+      console.log(response.data.message)
+      setmessage(response.data.message)
+    } catch (error) {
+      console.error("Error fetching messages:", error)
+    }
+}
 
 
-// if(!context){
-//   throw new Error("context is not present")
-// }
-// const {message , setmessage} = context
-// useEffect(() => {
-//   console.log(message.content);
 
-//   const getAiresponse = async () => {
-//     const now = Date.now();
-//     if (now - lastCalledRef.current < 10000) {
-//       console.log("Rate limiter active, skipping call.");
-//       return; // Exit if the function was called within the last 10 seconds
-//     }
+if(!context){
+  throw new Error("context is not present")
+}
+const {message , setmessage} = context
+useEffect(() => {
+  console.log(message.content);
 
-//     lastCalledRef.current = now; // Update the timestamp
-//     console.log("Calling the get AI response here");
-//     setLoading(true);
+  const getAiresponse = async () => {
+    const now = Date.now();
+    if (now - lastCalledRef.current < 10000) {
+      console.log("Rate limiter active, skipping call.");
+      return; 
+    }
 
-//     const PROMPT = JSON.stringify(message) + Prompt.CHAT_PROMPT;
+    lastCalledRef.current = now; 
+    console.log("Calling the get AI response here");
+    setloading(true);
 
-//     try {
-//       const result = await axios.post("api/ai-chat", {
-//         prompt: PROMPT,
-//       });
+    const PROMPT = JSON.stringify(message) + Prompt.CHAT_PROMPT;
 
-//       console.log("This is the AI response from the entered user prompt", result.data.res);
+    try {
+      const result = await axios.post("api/ai-chat", {
+        prompt: PROMPT,
+      });
 
-//       setmessage((prev) => [
-//         ...prev,
-//         {
-//           role: "ai",
-//           content: result.data.res,
-//         },
-//       ]);
+      console.log("This is the AI response from the entered user prompt", result.data.res);
 
-//       setResponseReceived(true);
-//     } catch (error) {
-//       console.error("Error generating AI response:", error);
-//     } finally {
-//       setloading(false);
-//     }
-//   };
+      setmessage((prev) => [
+        ...prev,
+        {
+          role: "ai",
+          content: result.data.res,
+        },
+      ]);
 
-//   if (message?.length > 0 && !responseReceived) {
-//     console.log(message[message.length - 1].role);
-//     let role = message[message.length - 1].role;
-//     if (role === "user") {
-//       console.log("Creating AI response");
-//       getAiresponse();
-//     }
-//   }
-// }, [message]);
+      setResponseReceived(true);
+    } catch (error) {
+      console.error("Error generating AI response:", error);
+    } finally {
+      setloading(false);
+    }
+  };
+
+  if (message?.length > 0 && !responseReceived) {
+    console.log(message[message.length - 1].role);
+    let role = message[message.length - 1].role;
+    if (role === "user") {
+      console.log("Creating AI response");
+      getAiresponse();
+    }
+  }
+}, [message]);
 
 
 const onGenerate = () => {
@@ -107,7 +107,7 @@ const onGenerate = () => {
     <div className='w-full relative h-[100%] flex flex-col '>
       <div className='w-full top-0 z-0 pt-1 min-h-10 max-h-[60%] overflow-y-hidden'>
         <div className='flex flex-col removesc h-full gap-3 overflow-y-scroll'>
-          {/* {message?.length > 0 ? (
+          {message?.length > 0 ? (
             message.map((msg, index) => (
               <div className='min-w-[60%] flex items-start gap-3 max-w-[90%] p-3 rounded-xl bg-[#222222]' key={index}>
                 {msg.role === "user" &&
@@ -121,7 +121,7 @@ const onGenerate = () => {
           {loading && <div className='flex items-center gap-3'>
             <Loader2Icon className='animate-spin' />
             <h2>Generating response....</h2>
-          </div>} */}
+          </div>}
         </div>
       </div>
 
