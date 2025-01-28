@@ -24,7 +24,9 @@ const Codeview = () => {
   const GetCode = async()=>{
 
     setloading(true)
-   
+  //  lua integrate 
+ //    
+
     const PROMPT = message[message.length - 1].content +" " + Prompt.CODE_GEN_PROMPT
     try{
       const result =await axios.post("/api/ai-chat/ai-code-gen",{

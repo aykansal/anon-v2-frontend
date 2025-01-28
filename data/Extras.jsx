@@ -71,7 +71,10 @@ export default config;
     "date-fns": "^4.1.0",
     "react-chartjs-2": "^5.3.0",
     "chart.js": "^4.4.7",
+    "framer-motion": "^12.0.6",
+    "locomotive-scroll": "^5.0.0-beta.21"
   },
+
   PRICING_DESC:'Start with a free account to speed up your workflow on public projects or boost your entire team with instantly-opening production environments.',
   PRICING_OPTIONS:[
     {
