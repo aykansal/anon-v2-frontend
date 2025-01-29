@@ -13,6 +13,7 @@ import axios from "axios";
 import { Loader2Icon } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import SandPackPreviewClient from "./SandPackPreviewClient";
+import { Toaster } from "../ui/toaster";
 const Codeview = () => {
   const [activeTab , setactiveTab] = useState("code")
   const [files, setfiles]= useState(Extras.DEFAULT_FILE)
@@ -108,7 +109,9 @@ const Codeview = () => {
       <h2>Generating files....</h2>
     </div>
 
+
   </div>}
+  <Toaster/>
   </div>
   )
 }

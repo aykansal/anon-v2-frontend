@@ -1,5 +1,6 @@
 "use client"
 import { ActionContext } from '@/context/ActionContext'
+import { toast } from '@/hooks/use-toast'
 import { SandpackPreview, useSandpack } from '@codesandbox/sandpack-react'
 import React, { useContext, useEffect, useRef } from 'react'
 
@@ -36,13 +37,20 @@ const SandPackPreviewClient = () => {
                                              const result = await client.getCodeSandboxURL()
                                              console.log(result)
                                              if(action.Action =="deploy"){
-                                                            window.open('https://'+result.sandboxId+'.csb.app/')
+                                              navigator.clipboard.writeText('https://'+result.sandboxId+'.csb.app/').then(()=>{
+                                                toast({
+                                                  title:"Link Copied to the clipboard" , 
+                                                  Description : "link copied to the clipboard` "
+                                                })
+                                              })
+
                                              }else if(action.Action =="export"){
                                                             window.open(result.editorUrl)
                                              }
                               }
 
                }
+               
   return (
                <SandpackPreview ref={previewRef}   showNavigator={true} style={{height:"78vh"}} />
 )
