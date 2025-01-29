@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export const GET = async (req, { params }) => {
   try {
-    const { id } = params; // Extract the dynamic route parameter `id`
+    const { id } = await params; // Extract the dynamic route parameter `id`
     const parsedId = parseInt(id, 10); // Convert id to an integer
 
     if (isNaN(parsedId)) {

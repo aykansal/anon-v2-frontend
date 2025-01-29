@@ -1,0 +1,17 @@
+{
+  "api": {
+    "listen": "127.0.0.1",
+    "port": 11434,
+    "cors": "*"
+  },
+  "models": {
+    "llama2": {
+      "url": "https://ollama.ai/models/deepseek-r1:14b",
+      "format": "json",
+      "options": {
+        "n_ctx": 2048,
+        "n_threads": 4
+      }
+    }
+  }
+}
