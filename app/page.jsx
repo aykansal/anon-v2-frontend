@@ -1,11 +1,9 @@
 import Hero from "@/components/custom/Hero";
 import Navbar from "@/components/custom/Navbar";
-import { Button } from "@/components/ui/button"
-
 
 export default function Home() {
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="flex flex-col w-full h-screen">
       <Navbar />
       <Hero />
     </div>
