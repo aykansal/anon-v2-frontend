@@ -10,48 +10,35 @@ import { redirect } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
 
 const Hero = () => {
-  const [userInput, setuserInput] = useState(null);
-  const Msgcontext = useContext(MessageContext);
-  const [loading, setloading] = useState(false);
-  const { setopenSignupDialog, openSignupDialog } = useContext(AuthContext);
+  const [userInput, setuserInput] = useState(null)
+  const [openSignupDialog, setopenSignupDialog] = useState(false)
+  const Msgcontext = useContext(MessageContext)
+  const [loading , setloading] = useState(false)
+  
+  const userContext = useContext(UserDetailsContext)
+  const {setmessage} = Msgcontext
 
-  const userContext = useContext(UserDetailsContext);
-  const { setmessage } = Msgcontext;
-  const { userDets } = userContext;
 
   const OnGenerate = async (input) => {
     setloading(true);
-    if (!userDets?.name) {
-      setopenSignupDialog(true);
-      return;
-    }
-    if (userDets.id) {
-      console.log('storing the data in setMeesage');
-      setmessage({
-        role: 'user',
-        content: input,
-      });
 
-      const response = await axios.post('/api/messages', {
-        id: userDets.id,
-        input: input,
-      });
-      console.log(response.data.msg.message);
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Proper delay
 
-      setmessage(response.data.msg.message);
+    setmessage({
+        role: "user",
+        content: input
+    });
 
-      localStorage.setItem('chatId', response.data.msg.id);
-      localStorage.setItem(
-        'messageArray',
-        JSON.stringify(response.data.msg.message)
-      );
+    localStorage.setItem("messageArray", JSON.stringify({
+        role: "user",
+        content: input
+    }));
 
-      if (response.data) {
-        setloading(false);
-        redirect('/workspace');
-      }
-    }
-  };
+    setloading(false);
+    redirect('/workspace');
+};
+
+
 
   return (
     <div className="flex flex-col items-center mt-28 w-full h-full">

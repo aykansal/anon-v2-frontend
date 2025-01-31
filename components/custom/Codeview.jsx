@@ -30,11 +30,11 @@ const Codeview = () => {
 
     const PROMPT = message[message.length - 1].content +" " + Prompt.CODE_GEN_PROMPT
     try{
-      const result =await axios.post("/api/ai-chat/ai-code-gen",{
+      const result =await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/code/genCode`,{
         prompt:PROMPT
       }) 
-      console.log(result.data)
-      const aiResp = result.data
+      console.log(result.data.resp)
+      const aiResp = result.data.resp
       const mergedFile = {...Extras.DEFAULT_FILE , ...aiResp?.files}
       setfiles(mergedFile)
       setloading(false)
