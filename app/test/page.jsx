@@ -5,12 +5,33 @@ import { Button } from '@/components/ui/button';
 import {
   connectWallet,
   fetchMessagesAR,
-  fetchResultsAR,
-  getWalletDetails,
   messageAR,
+  runLua,
   spawnProcess,
   transactionAR,
 } from '@/lib/arkit';
+
+const file1Code = `import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+export function cn(...inputs: ClassValue[]) {
+   return twMerge(clsx(inputs));
+}`;
+const file2Code = `import2 { clsx2, type ClassValue } from "clsx2";
+import { twMerge } from "tailwind-merge";
+export function cn(...inputs: ClassValue[]) {
+   return twMerge(clsx(inputs));
+}`;
+
+const fileData = [
+  {
+    file: 'data/file1.tsx',
+    body: file1Code,
+  },
+  {
+    file: 'data/file2.tsx',
+    body: file2Code,
+  },
+];
 
 const Testarweave = () => {
   const [process, setProcess] = useState('');
@@ -20,7 +41,7 @@ const Testarweave = () => {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async ({ fileData }) => {
     try {
       setLoading(true);
       const process = localStorage.getItem('spawnedProcess');
@@ -30,35 +51,13 @@ const Testarweave = () => {
         return;
       }
 
-      const file1Code = `import { clsx, type ClassValue } from "clsx";
-     import { twMerge } from "tailwind-merge";
-     export function cn(...inputs: ClassValue[]) {
-        return twMerge(clsx(inputs));
-     }`;
-      const file2Code = `import2 { clsx2, type ClassValue } from "clsx2";
-     import { twMerge } from "tailwind-merge";
-     export function cn(...inputs: ClassValue[]) {
-        return twMerge(clsx(inputs));
-     }`;
-      // const stringify = JSON.stringify(file1Code);
-      const fileData = [
-        {
-          file: 'data/file1.tsx',
-          body: file1Code,
-        },
-        {
-          file: 'data/file2.tsx',
-          body: file2Code,
-        },
-      ];
-
       const messageId = await messageAR({
         process,
         data: JSON.stringify(fileData),
         tags: [
           {
-            name: 'user-response',
-            value: 'llm-response',
+            name: 'Action',
+            value: 'ChatMessage',
           },
         ],
       });
@@ -89,10 +88,24 @@ const Testarweave = () => {
     }
   };
 
-  const handleResults = async () => {
+  const handleTransaction = async () => {
     await transactionAR({
       data: '<html><head><meta charset="UTF-8"><title>Hello permanent world! This was signed via ArConnect!!!</title></head><body></body></html>',
     });
+  };
+
+  const handleSpawn = async () => {
+    setSpawning(true);
+    const storedProcess = localStorage.getItem('spawnedProcess');
+    if (storedProcess) {
+      console.warn('Process already spawned!');
+      setProcess(storedProcess);
+    } else {
+      const process = await spawnProcess();
+      setProcess(process);
+      localStorage.setItem('spawnedProcess', process);
+    }
+    setSpawning(false);
   };
 
   useEffect(() => {
@@ -103,31 +116,15 @@ const Testarweave = () => {
 
   return (
     <div className="p-4">
-      <Button
-        onClick={async () => {
-          await connectWallet();
-          const walletInfo = await getWalletDetails();
-          console.log(walletInfo);
-        }}
-      >
-        Connect
-      </Button>
       <div className="space-x-4 mb-8">
         <Button
           onClick={async () => {
-            setSpawning(true);
-            const storedProcess = localStorage.getItem('spawnedProcess');
-            if (storedProcess) {
-              console.warn('Process already spawned!');
-              setProcess(storedProcess);
-            } else {
-              const process = await spawnProcess();
-              setProcess(process);
-              localStorage.setItem('spawnedProcess', process);
-            }
-            setSpawning(false);
+            await connectWallet();
           }}
         >
+          Connect
+        </Button>
+        <Button onClick={handleSpawn}>
           {spawning ? ' Spawning... ' : ' Spawn Process'}
         </Button>
         <Button onClick={handleSendMessage}>
@@ -136,17 +133,9 @@ const Testarweave = () => {
         <Button
           onClick={async () => {
             setLoading(true);
-            await messageAR({
+            await runLua({
               process,
-              data: `local json = require("json")
-local AOlearn=require("aolearn")
-
-Handlers.add(
-  "pingpong",
-  Handlers.utils.hasMatchingData("ping"),
-  Handlers.utils.reply(json.encode(AOlearn)))`,
-              // data: 'Handlers.add("pingpong",Handlers.utils.hasMatchingData("ping"),Handlers.utils.reply("pong"))',
-              tags: [{ name: 'Action', value: 'Eval' }],
+              code: 'Handlers.add("pingpong",Handlers.utils.hasMatchingData("ping"),Handlers.utils.reply("pong"))',
             })
               .then(console.log)
               .catch(console.error);

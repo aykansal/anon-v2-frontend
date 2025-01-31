@@ -246,19 +246,24 @@ files:{
       }
     };
 
-    Make sure to add logic as well inthe handlers that you will create, and use sqlite for database storage in the arweave project.
+    For example when you build a project, it would be a process that will be spawned only once automatically by you itself. Then all the major interactions(like chatting, payments, send messages and others) under that webdapp will be handled by through messages/transactionsp.
+    Note: you have to understand where the arweave handlers can be integrated in the project and based on that you have to generate a separate lua.js file on the base file and integrate those handlers in the code like dryrun
+    Example Usecases:
+    1. When creation of major/root/parent object you have to spawn a process (like, creation of new projects in a platform, creation of lists(that contains some sub lists))
+    2. messageAr -> for the interactions of user with the webapp like for CRUD(create read update delete) operations. For example suppose if a todolist has been created then addition/updation/deletion of usertaska will send message to update the tasks list on the arweave.
+    3. Fetchmessages -> for example in a todolist app, the tasks will be shown to user based on their characteristics and then those will be shown in the webapp, there the tasks array will be fetched from arweave using project process that has been created at the beginning.
+    4. For storage of those tasks in the sqlite database, you have to write lua functions and register them into handlers  that will be sent on the arweave ao blockchain 
+    5. For authentication use connect wallet and untill user is not connected , nothign can be accessible other than the landing page, and after connection show user it's walletdetails and disconnect button. Also check for authenication for each route.
 
     Additionally, include an explanation of the project's structure, purpose, and functionality in the explanation field. Make the response concise and clear in one paragraph.
-    - When asked then only use this package to import, here are some packages available to import and use (date-fns,react-chartjs-2,"firebase","@google/generative-ai" ) only when it required
+    - When asked then only use this package to import, here are some packages available to import and use (date-fns,react-chartjs-2) only when it required
     - For placeholder images, please use a https://archive.org/download/placeholder-image/placeholder-image.jpg
     - Add Emoji icons whenever needed to give good user experinence
     - all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.
     - By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.
     - Use icons from lucide-react for logos.
     - Use stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.
-
-    You don't have to directly create an app, you have to integrate these functions in the app that you would create, For example when you build a project, it would be a process that will be spawned only once automatically by you itself. Then all the major interactions(like chatting, payments, send messages and others) under that webdapp will be handled by through messages/transactionsp.
-    Note: you have to understand where the arweave handlers can be integrated in the project and based on that you have to generate a separate lua.js file on the base file and integrate those handlers in the code like dryrun
+    - You don't have to directly create an app, you have to integrate these functions in the app that you would create, 
     `,
 };
 
