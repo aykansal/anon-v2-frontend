@@ -1,7 +1,7 @@
 "use client"
 import { MessageContext } from "@/context/MessagesContext";
 import Extras from "@/data/Extras";
-import Prompt from "@/data/Prompt";
+import Prompt from "@/data/PromptAO";
 import {
   SandpackProvider,
   SandpackLayout,
@@ -30,11 +30,11 @@ const Codeview = () => {
 
     const PROMPT = message[message.length - 1].content +" " + Prompt.CODE_GEN_PROMPT
     try{
-      const result =await axios.post("/api/ai-chat/ai-code-gen",{
+      const result =await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/code/genCode`,{
         prompt:PROMPT
       }) 
-      console.log(result.data)
-      const aiResp = result.data
+      console.log(result.data.resp)
+      const aiResp = result.data.resp
       const mergedFile = {...Extras.DEFAULT_FILE , ...aiResp?.files}
       setfiles(mergedFile)
       setloading(false)
@@ -62,9 +62,9 @@ const Codeview = () => {
 
 
   return (
-    <div className=" relative " >
-      <div className="bg-[#181818] w-full rounded-t-xl p-2 border">
-        <div className="flex w-[140px] justify-center rounded-full items-center gap-1 flex-wrap shrink-0 bg-black p-1 ">
+    <div className="relative" >
+      <div className="bg-[#181818] p-2 border rounded-t-xl w-full">
+        <div className="flex flex-wrap justify-center items-center gap-1 bg-black p-1 rounded-full w-[140px] shrink-0">
           <h1
           onClick={()=>setactiveTab("code")} 
           className={`cursor-pointer text-sm ${activeTab=="code"&&"text-blue-500 bg-blue-500/30 "} px-2 py-1  rounded-full`}>code</h1>
@@ -102,7 +102,7 @@ const Codeview = () => {
   </SandpackProvider>
 {loading&&
 
-  <div className="w-full rounded-xl absolute top-0 bg-gray-800 opacity-80 h-full flex items-center justify-center">
+  <div className="top-0 absolute flex justify-center items-center bg-gray-800 opacity-80 rounded-xl w-full h-full">
 
     <div className="flex items-center gap-2">
       <Loader2Icon className="animate-spin"/>

@@ -16,38 +16,27 @@ const Hero = () => {
   
   const userContext = useContext(UserDetailsContext)
   const {setmessage} = Msgcontext
-  const {userDets  } = userContext 
-
-  const OnGenerate = async(input) =>{
-    setloading(true)
-    if(!userDets?.name){
-        setopenSignupDialog(true)
-        return ; 
-    }
-    if(userDets.id){
-      console.log("storing the data in setMeesage")
-      setmessage({
-        role:"user" , 
-        content:input
-      })
-
-      const response = await axios.post("/api/messages" , {id:userDets.id , input:input})
-      console.log(response.data.msg.message)
-
-      setmessage(response.data.msg.message)
-
-      localStorage.setItem("chatId" , response.data.msg.id)
-      localStorage.setItem("messageArray" , JSON.stringify(response.data.msg.message))
 
 
+  const OnGenerate = async (input) => {
+    setloading(true);
 
-      if(response.data){
-        setloading(false)
-        redirect('/workspace') 
-      }
-    }
- 
-  }
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Proper delay
+
+    setmessage({
+        role: "user",
+        content: input
+    });
+
+    localStorage.setItem("messageArray", JSON.stringify({
+        role: "user",
+        content: input
+    }));
+
+    setloading(false);
+    redirect('/workspace');
+};
+
 
 
   return (

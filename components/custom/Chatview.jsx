@@ -7,45 +7,47 @@ import { ArrowRight, Link, Loader2Icon } from 'lucide-react'
 import Image from 'next/image'
 import Markdown from "react-markdown"
 import Prompt from '@/data/Prompt'
+import { sanitizeAndParseJSON } from '@/configs/AiModel'
 const Chatview = () => {
   
   
   
   const lastCalledRef = useRef(0); 
   const context = useContext(MessageContext)
-  const { userDets } = useContext(UserDetailsContext)
   const [userInput, setuserInput] = useState('')
   const [loading, setloading] = useState(false)
   const [responseReceived, setResponseReceived] = useState(false)
+  if(!context){
+
+return(
+  <>
+  the file dose not exits
+  </>
+)
+    
+  }
+
+  else{
 
   
 
-
-  useEffect(() => {
-    getMessages()
-  }, [])
+  const {message , setmessage} = context
+  
 
 
-  const getMessages = async () => {
-    const id = localStorage.getItem("chatId")
-    console.log(id)
-    try {
-      const response = await axios.get("/api/messages/getmessages/" + id)
-      console.log(response.data.message)
-      setmessage(response.data.message)
-    } catch (error) {
-      console.error("Error fetching messages:", error)
-    }
-}
-
-
-
-if(!context){
-  throw new Error("context is not present")
-}
-const {message , setmessage} = context
 useEffect(() => {
-  console.log(message.content);
+  const localMessages = JSON.parse(localStorage.getItem("messageArray"))
+
+  setmessage([localMessages])
+},[])
+
+
+
+
+
+
+
+useEffect(() => {
 
   const getAiresponse = async () => {
     const now = Date.now();
@@ -59,19 +61,21 @@ useEffect(() => {
     setloading(true);
 
     const PROMPT = JSON.stringify(message) + Prompt.CHAT_PROMPT;
+    console.log(PROMPT)
 
     try {
-      const result = await axios.post("api/ai-chat", {
+      const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/getChat`, {
         prompt: PROMPT,
       });
 
-      console.log("This is the AI response from the entered user prompt", result.data.res);
+
+      const description = sanitizeAndParseJSON(result.data.res)
 
       setmessage((prev) => [
         ...prev,
         {
           role: "ai",
-          content: result.data.res,
+          content: description.response
         },
       ]);
 
@@ -109,10 +113,11 @@ const onGenerate = () => {
         <div className='flex flex-col removesc h-full gap-3 overflow-y-scroll'>
           {message?.length > 0 ? (
             message.map((msg, index) => (
-              <div className='min-w-[60%] flex items-start gap-3 max-w-[90%] p-3 rounded-xl bg-[#222222]' key={index}>
+              <div className='min-w-[60%] flex items-start gap-3 max-w-[90%] p-3 flex-wrap rounded-xl bg-[#222222]' key={index}>
                 {msg.role === "user" &&
-                  <Image className='rounded-full' src={userDets.picture} width={35} height={35} alt="not showing" />}
-                <Markdown className='leading-7 '>{msg.content}</Markdown>
+                <div className='w-10 h-10 rounded-full items-center  justify-center bg-green-700 flex text-lg uppercase font-bold'>U</div>
+                  }
+                <Markdown className='leading-7  '>{msg.content}</Markdown>
               </div>
             ))
           ) : (
@@ -147,5 +152,8 @@ const onGenerate = () => {
     </div>
   )
 }
+
+} 
+
 
 export default Chatview
