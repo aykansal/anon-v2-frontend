@@ -9,6 +9,7 @@ import {
   runLua,
   spawnProcess,
   transactionAR,
+  useQuickWallet,
 } from '@/lib/arkit';
 
 const file1Code = `import { clsx, type ClassValue } from "clsx";
@@ -40,6 +41,16 @@ const Testarweave = () => {
   const [spawning, setSpawning] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
+  const [quickWalletData, setQuicktWalletData] = useState(null);
+
+  const handleGenerateWallet = async () => {
+    try {
+      const data = await useQuickWallet();
+      setQuicktWalletData(data);
+    } catch (error) {
+      console.error('Error generating Arweave wallet:', error);
+    }
+  };
 
   const handleSendMessage = async ({ fileData }) => {
     try {
@@ -124,6 +135,7 @@ const Testarweave = () => {
         >
           Connect
         </Button>
+        <Button onClick={handleGenerateWallet}>Quick Wallet</Button>
         <Button onClick={handleSpawn}>
           {spawning ? ' Spawning... ' : ' Spawn Process'}
         </Button>
@@ -149,6 +161,13 @@ const Testarweave = () => {
         </Button>
       </div>
       <div>
+        <h2>
+          {quickWalletData && (
+            <div>
+              Wallet Address: {quickWalletData.address}
+            </div>
+          )}
+        </h2>
         <h2 className="mb-4 font-bold text-2xl">
           Messages Fetched from Arweave for {process}
         </h2>

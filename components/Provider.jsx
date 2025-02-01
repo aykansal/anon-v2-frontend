@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import Appbar from '@/components/custom/Appbar';
 import { ActionContext } from '@/context/ActionContext';
@@ -29,4 +28,4 @@ const Provider = ({ children, ...props }) => {
   );
 };
 
-export default Provider;
+export default Provider; 
