@@ -1,23 +1,18 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { ArrowRight, Link, Loader2Icon } from 'lucide-react';
-import { MessageContext } from '@/context/MessagesContext';
-import { UserDetailsContext } from '@/context/UserDetailsContext';
+import { useRouter } from 'next/navigation';
 import Login from './Login';
-import axios from 'axios';
-import { redirect } from 'next/navigation';
-import { AuthContext } from '@/context/AuthContext';
+import { MessageContext } from '@/context/MessagesContext';
+import { ArrowRight, Link, Loader2Icon } from 'lucide-react';
 
 const Hero = () => {
-  const [userInput, setuserInput] = useState(null)
-  const [openSignupDialog, setopenSignupDialog] = useState(false)
-  const Msgcontext = useContext(MessageContext)
-  const [loading , setloading] = useState(false)
-  
-  const userContext = useContext(UserDetailsContext)
-  const {setmessage} = Msgcontext
-
+  const router = useRouter();
+  const [userInput, setuserInput] = useState(null);
+  const [openSignupDialog, setopenSignupDialog] = useState(false);
+  const Msgcontext = useContext(MessageContext);
+  const [loading, setloading] = useState(false);
+  const { setmessage } = Msgcontext;
 
   const OnGenerate = async (input) => {
     setloading(true);
@@ -25,20 +20,21 @@ const Hero = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000)); // Proper delay
 
     setmessage({
-        role: "user",
-        content: input
+      role: 'user',
+      content: input,
     });
 
-    localStorage.setItem("messageArray", JSON.stringify({
-        role: "user",
-        content: input
-    }));
+    localStorage.setItem(
+      'messageArray',
+      JSON.stringify({
+        role: 'user',
+        content: input,
+      })
+    );
 
     setloading(false);
-    redirect('/workspace');
-};
-
-
+    router.push('/workspace');
+  };
 
   return (
     <div className="flex flex-col items-center mt-28 w-full h-full">
@@ -56,7 +52,7 @@ const Hero = () => {
           <textarea
             className="bg-transparent px-2 w-full max-w-xl h-32 outline-none removesc resize-none"
             onChange={(e) => setuserInput(e.target.value)}
-          ></textarea>
+          />
 
           <ArrowRight
             onClick={() => OnGenerate(userInput)}
