@@ -13,7 +13,7 @@ const SidebarContainer = styled(motion.div)`
   padding: 2rem 1.5rem;
   z-index: 1000;
   overflow-y: auto;
-  
+
   @media (max-width: 768px) {
     width: 240px;
   }
@@ -27,7 +27,7 @@ const NavItem = styled(motion.div)`
   font-family: 'Open Sans', sans-serif;
   color: #4a5568;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.8);
     color: #2d3748;
@@ -48,19 +48,19 @@ const sidebarVariants = {
   open: {
     x: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 300,
-      damping: 30
-    }
+      damping: 30,
+    },
   },
   closed: {
-    x: "-100%",
+    x: '-100%',
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 300,
-      damping: 30
-    }
-  }
+      damping: 30,
+    },
+  },
 };
 
 const itemVariants = {
@@ -68,16 +68,16 @@ const itemVariants = {
     x: 0,
     opacity: 1,
     transition: {
-      duration: 0.2
-    }
+      duration: 0.2,
+    },
   },
   closed: {
     x: -20,
     opacity: 0,
     transition: {
-      duration: 0.2
-    }
-  }
+      duration: 0.2,
+    },
+  },
 };
 
 const Sidebar = ({ isOpen }) => {
@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen }) => {
     { title: 'Dashboard', icon: '🏠' },
     { title: 'Profile', icon: '👤' },
     { title: 'Settings', icon: '⚙️' },
-    { title: 'Help', icon: '❓' }
+    { title: 'Help', icon: '❓' },
   ];
 
   return (
@@ -106,7 +106,7 @@ const Sidebar = ({ isOpen }) => {
               AnonV2
             </motion.span>
           </Logo>
-          
+
           {navItems.map((item, index) => (
             <NavItem
               key={index}
@@ -128,4 +128,4 @@ const Sidebar = ({ isOpen }) => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

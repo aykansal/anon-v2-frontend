@@ -9,12 +9,12 @@ const LayoutContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  margin-left: ${props => props.sidebarOpen ? '280px' : '0'};
+  margin-left: ${(props) => (props.sidebarOpen ? '280px' : '0')};
   transition: margin-left 0.3s ease;
   padding: 2rem;
-  
+
   @media (max-width: 768px) {
-    margin-left: ${props => props.sidebarOpen ? '240px' : '0'};
+    margin-left: ${(props) => (props.sidebarOpen ? '240px' : '0')};
   }
 `;
 
@@ -34,7 +34,7 @@ const MenuButton = styled.button`
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  
+
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
@@ -49,14 +49,12 @@ const Layout = ({ children }) => {
       <MenuButton onClick={() => setSidebarOpen(!sidebarOpen)}>
         {sidebarOpen ? '✕' : '☰'}
       </MenuButton>
-      
+
       <Sidebar isOpen={sidebarOpen} />
-      
-      <MainContent sidebarOpen={sidebarOpen}>
-        {children}
-      </MainContent>
+
+      <MainContent sidebarOpen={sidebarOpen}>{children}</MainContent>
     </LayoutContainer>
   );
 };
 
-export default Layout; 
+export default Layout;

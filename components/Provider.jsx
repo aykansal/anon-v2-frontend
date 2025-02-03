@@ -28,4 +28,4 @@ const Provider = ({ children, ...props }) => {
   );
 };
 
-export default Provider; 
+export default Provider;

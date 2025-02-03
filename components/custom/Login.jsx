@@ -12,8 +12,6 @@ import { useState } from 'react';
 const Login = ({ open, setOpenChange }) => {
   const [loading] = useState(false);
 
-
-
   return (
     <Dialog open={open} onOpenChange={() => setOpenChange(false)}>
       <DialogContent>
