@@ -6,12 +6,10 @@
   display: none;
 }
 
-.removesc{
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+.removesc {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
-
-
 
 @layer base {
   :root {
@@ -93,7 +91,6 @@
     @apply bg-background text-foreground;
   }
 }
-
 
 @layer base {
   :root {

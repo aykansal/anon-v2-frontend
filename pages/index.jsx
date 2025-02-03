@@ -1,5 +1,5 @@
-import Hero from "@/components/custom/Hero";
-import Navbar from "@/components/custom/Navbar";
+import Hero from '@/components/custom/Hero';
+import Navbar from '@/components/custom/Navbar';
 
 export default function Home() {
   return (
@@ -8,4 +8,4 @@ export default function Home() {
       <Hero />
     </div>
   );
-} 
+}

@@ -1,7 +1,6 @@
 import Chatview from '@/components/custom/Chatview';
 import Codeview from '@/components/custom/Codeview';
 import Navbar from '@/components/custom/Navbar';
-import { Toaster } from '@/components/ui/toaster';
 
 const Workspace = () => {
   return (

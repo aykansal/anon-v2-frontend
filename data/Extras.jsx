@@ -1,5 +1,3 @@
-import dedent from 'dedent';
-
 export default {
   SUGGSTIONS: [
     'Create ToDo App in React',
@@ -155,9 +153,9 @@ export default config;
     '@google/generative-ai': '^0.21.0',
     'react-chartjs-2': '^5.3.0',
     'chart.js': '^4.4.7',
-    'axios':'^1.7.9',
+    axios: '^1.7.9',
     'class-variance-authority': '^0.7.0',
-    'clsx': '^2.0.0',
+    clsx: '^2.0.0',
     '@tailwindcss/typography': '^0.5.10',
   },
 

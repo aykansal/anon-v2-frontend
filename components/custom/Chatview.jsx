@@ -4,9 +4,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { MessageContext } from '@/context/MessagesContext';
 import { ArrowRight, Link, Loader2Icon } from 'lucide-react';
+import ChatPrompt from '@/data/ChatPrompt';
 import Markdown from 'react-markdown';
-import Prompt from '@/data/Prompt';
-import { sanitizeAndParseJSON } from '@/configs/AiModel';
 
 const Chatview = () => {
   const lastCalledRef = useRef(0);
@@ -14,7 +13,7 @@ const Chatview = () => {
   const [userInput, setuserInput] = useState('');
   const [loading, setloading] = useState(false);
   const [responseReceived, setResponseReceived] = useState(false);
-  
+
   if (!context) {
     return <>the file dose not exits</>;
   } else {
@@ -38,24 +37,25 @@ const Chatview = () => {
         console.log('Calling the get AI response here');
         setloading(true);
 
-        const PROMPT = JSON.stringify(message) + Prompt.CHAT_PROMPT;
-        console.log(PROMPT);
+        // add the prompt to the last/recent message
+        message[message.length - 1].content +=
+          ' . And Remember, ' + ChatPrompt.CHAT_PROMPT;
 
+        const stringMessage = JSON.stringify(message);
         try {
           const result = await axios.post(
             `${process.env.NEXT_PUBLIC_BASE_URL}/chat/getChat`,
             {
-              prompt: PROMPT,
+              prompt: stringMessage,
             }
           );
-
-          const description = sanitizeAndParseJSON(result.data.res);
-
+          const response = await result?.data?.response;
+          console.log(response);
           setmessage((prev) => [
             ...prev,
             {
               role: 'ai',
-              content: description.response,
+              content: response,
             },
           ]);
 
